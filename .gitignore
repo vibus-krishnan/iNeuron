@@ -1,0 +1,8 @@
+# dependencies
+/node_modules
+.env
+requests.http
+./build
+/build
+/.vscode
+package-lock.json

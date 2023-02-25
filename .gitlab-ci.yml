@@ -1,0 +1,23 @@
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - test
+  - deploy
+
+step-test:
+  stage: test
+  script:
+    - npm i --no-save
+    - mocha -r ts-node/register 'src/tests/**/*.ts'
+
+step-deploy:
+  stage: deploy
+  script:
+    - sudo apt-get install -y python-pip
+    - sudo pip install docker-compose
+    - sudo docker image prune -f
+    - docker build -t .
+    - sudo docker-compose -f docker-compose.yml build --no-cache
+    - sudo docker-compose -f docker-compose.yml up -d
